@@ -35,19 +35,14 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           rm -rf /home/ubuntu/docker-project/django-app/*
-          mkdir -p /home/ubuntu/docker-project/django-app
-    
+          mkdir -p /home/ubuntu/docker-project/django-app\
     - name: Copy code to EC2
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USERNAME }}
         key: ${{ secrets.EC2_SSH_KEY }}
-        source: |
-          django-app
-          Dockerfile
-          docker-compose.yml
-          requirements.txt
+        source: "django-app/*,Dockerfile,docker-compose.yml,requirements.txt"
         target: "/home/ubuntu/docker-project/"
         strip_components: 0
       

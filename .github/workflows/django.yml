@@ -43,9 +43,7 @@ jobs:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USERNAME }}
         key: ${{ secrets.EC2_SSH_KEY }}
-        source: |
-          django-app
-          docker-compose.yml
+        source: "django-app/,docker-compose.yml"
         target: "/home/ubuntu/docker-project/"
         strip_components: 0
       

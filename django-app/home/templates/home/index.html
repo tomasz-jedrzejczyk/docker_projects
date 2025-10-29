@@ -4,9 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GitLabRat</title>
+    <style>
+        .blog-post {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .blog-post h2 {
+            margin-top: 0;
+        }
+        .blog-meta {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
     <h1>GitLabRat</h1>
     <p>Welcome to my blog where I share my thoughts and ideas about technology, life, and everything in between.</p>
+
+    {% if blog_posts %}
+        {% for post in blog_posts %}
+        <div class="blog-post">
+            <h2>{{ post.title }}</h2>
+            <div class="blog-meta">
+                By {{ post.author.username }} | {{ post.created_at|date:"F d, Y" }}
+            </div>
+            <p>{{ post.content|truncatewords:50 }}</p>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No blog posts yet.</p>
+    {% endif %}
 </body>
 </html>

@@ -3,8 +3,8 @@ from .models import BlogPost
 
 @admin.register(BlogPost)
 class BlogPostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'created_date', 'published_date')
+    list_display = ('title', 'author', 'created_at', 'published')
+    list_filter = ('published', 'created_at')
     search_fields = ('title', 'content')
-    list_filter = ('published_date', 'created_date')
     prepopulated_fields = {'slug': ('title',)}
-    date_hierarchy = 'created_date'
+    date_hierarchy = 'created_at'

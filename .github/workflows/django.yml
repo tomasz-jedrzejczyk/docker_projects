@@ -47,7 +47,7 @@ jobs:
         target: "/home/ubuntu/docker-project/"
         strip_components: 0
       
-    - name: Deploy on EC2
+    - name: Deploy Django on EC2 (keep n8n running)
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.EC2_HOST }}
@@ -55,7 +55,13 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           cd /home/ubuntu/docker-project
-          docker-compose down || true
-          docker-compose up --build -d
+          # Stop and remove only the Django container
+          docker-compose stop django
+          docker-compose rm -f django
+          # Rebuild and start only Django (--no-deps prevents restarting n8n)
+          docker-compose build django
+          docker-compose up -d --no-deps django
+          # Show running containers
           docker ps
+          # Clean up unused images
           docker image prune -f

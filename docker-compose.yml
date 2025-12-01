@@ -8,7 +8,7 @@ services:
       - ./django-app:/app
     environment:
       - DEBUG=1
-      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,54.221.183.153
+      - DJANGO_ALLOWED_HOSTS=localhost,100.28.228.132
     restart: unless-stopped
     command: python manage.py runserver 0.0.0.0:8000
 

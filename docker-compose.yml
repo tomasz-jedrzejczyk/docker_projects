@@ -8,7 +8,7 @@ services:
       - ./django-app:/app
     environment:
       - DEBUG=1
-      - DJANGO_ALLOWED_HOSTS=localhost,100.28.228.132
+      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,*
     restart: unless-stopped
     command: python manage.py runserver 0.0.0.0:8000
 
@@ -18,10 +18,11 @@ services:
     ports:
       - "5678:5678"
     environment:
-      - N8N_HOST=0.0.0.0
+      - N8N_HOST=${EC2_HOST:-localhost}
       - N8N_PORT=5678
       - N8N_PROTOCOL=http
       - N8N_SECURE_COOKIE=false
+      - WEBHOOK_URL=http://${EC2_HOST}:5678/
     volumes:
       - n8n_data:/home/node/.n8n
     restart: unless-stopped

@@ -54,14 +54,24 @@ jobs:
         username: ${{ secrets.EC2_USERNAME }}
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
-          cd /home/ubuntu/docker-project
-          # Stop and remove only the Django container
-          docker-compose stop django
-          docker-compose rm -f django
-          # Rebuild and start only Django (--no-deps prevents restarting n8n)
-          docker-compose build django
-          docker-compose up -d --no-deps django
-          # Show running containers
-          docker ps
-          # Clean up unused images
+          # 1. Go to folder (Use variable if possible, or ensure path matches your user)
+          cd /home/${{ secrets.EC2_USERNAME }}/docker-project
+          
+          # 2. Login Check (Optional but good for debugging)
+          echo "Deploying to directory: $(pwd)"
+          
+          # 3. Stop and remove only the Django container
+          # Note the space: 'docker compose', NOT 'docker-compose'
+          docker compose stop django
+          docker compose rm -f django
+          
+          # 4. Rebuild and start only Django
+          # --no-deps ensures n8n doesn't get restarted accidentally
+          docker compose build django
+          docker compose up -d --no-deps django
+          
+          # 5. Run Migrations (Best practice to run this inside the container after deploy)
+          docker compose exec -T django python manage.py migrate
+          
+          # 6. Clean up unused images to save disk space
           docker image prune -f

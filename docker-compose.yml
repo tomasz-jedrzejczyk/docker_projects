@@ -18,11 +18,13 @@ services:
     ports:
       - "5678:5678"
     environment:
-      - N8N_HOST=${EC2_HOST:-localhost}
+      # Hardcoded IP for Host
+      - N8N_HOST=100.28.228.132
       - N8N_PORT=5678
       - N8N_PROTOCOL=http
       - N8N_SECURE_COOKIE=false
-      - WEBHOOK_URL=http://${EC2_HOST}:5678/
+      # Hardcoded IP for Webhook URL
+      - WEBHOOK_URL=http://100.28.228.132:5678/
     volumes:
       - n8n_data:/home/node/.n8n
     restart: unless-stopped

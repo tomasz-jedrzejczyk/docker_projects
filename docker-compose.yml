@@ -3,14 +3,14 @@ services:
     build: ./django-app
     container_name: django-app
     ports:
-      - "8000:8000"
+      - "8090:8090"
     volumes:
       - ./django-app:/app
     environment:
       - DEBUG=1
       - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,*
     restart: unless-stopped
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8090
 
   n8n:
     image: n8nio/n8n:latest
